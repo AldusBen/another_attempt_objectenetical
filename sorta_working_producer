@@ -1,0 +1,51 @@
+import numpy as np
+import random
+
+# Define the 32x32 array with None values
+array = np.full((32, 32), None)
+
+# Function to initialize objects in the array
+def initialize_objects(array, points, value):
+    for point in points:
+        x, y = point
+        array[x, y] = 0
+        # Fill the column vertically
+        for i in range(32):
+            if array[i, y] is None:
+                array[i, y] = min(i, 31 - i)
+        # Fill the row horizontally
+        for j in range(32):
+            if array[x, j] is None:
+                array[x, j] = min(j, 31 - j)
+
+# Example points for initialization
+male_points = [(0, 0), (31, 31)]
+female_points = [(15, 15), (0, 31)]
+
+# Initialize male and female objects
+initialize_objects(array, male_points, 'y')
+initialize_objects(array, female_points, 'x')
+
+print(array)
+
+class ObjecteneticObject:
+    def __init__(self, points, obj_type):
+        self.points = points
+        self.obj_type = obj_type
+
+def combine_objects(male, female):
+    new_points = []
+    for _ in range(5):
+        new_points.append(random.choice(male.points))
+        new_points.append(random.choice(female.points))
+    return ObjecteneticObject(new_points, random.choice(['Male', 'Female']))
+
+# Example objects
+male_object = ObjecteneticObject(male_points, 'Male')
+female_object = ObjecteneticObject(female_points, 'Female')
+
+# Combine objects to create a new object
+new_object = combine_objects(male_object, female_object)
+
+print(new_object.points)
+print(new_object.obj_type)
